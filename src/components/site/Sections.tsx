@@ -743,15 +743,7 @@ export function Methodology() {
                   boxShadow: "0 4px 24px rgba(44,44,42,0.06), inset 0 1px 0 rgba(255,255,255,0.7)",
                 }}
               >
-                {/* Número grande decorativo — dourado sutil */}
-                <span
-                  className="absolute -right-2 -top-6 font-serif font-light italic select-none pointer-events-none"
-                  style={{ fontSize: "9rem", color: "rgba(201,168,76,0.10)", lineHeight: 1 }}
-                  aria-hidden
-                >
-                  {i + 1}
-                </span>
-                {/* Número pequeno visível — dourado */}
+                {/* Número visível principal — dourado */}
                 <span
                   className="font-serif text-5xl font-light italic"
                   style={{ color: "var(--gold)", opacity: 0.85 }}
