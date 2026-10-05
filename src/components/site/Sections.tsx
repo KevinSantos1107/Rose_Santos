@@ -191,11 +191,20 @@ export function Hero() {
       id="inicio"
       className="relative isolate flex items-end overflow-hidden pb-9 pt-0 sm:pt-[calc(76px+6svh)] sm:pb-14 lg:h-[100svh] lg:min-h-[620px] lg:items-center lg:pb-6 lg:pt-[88px] perspective-container"
       style={{
-        background: "var(--hero-deep)",
+        // No desktop: metade esquerda (texto) neutra, metade direita (foto) verde
+        // No mobile: fundo neutro escuro uniforme
+        background: "var(--hero-neutral)",
         // No mobile usa a altura travada; no lg o CSS cuida com h-[100svh]
         minHeight: heroH ? `${heroH}px` : "100svh",
       }}
     >
+      {/* No desktop: faixa verde cobre apenas a metade direita (onde fica a foto) */}
+      <div
+        className="absolute inset-y-0 right-0 hidden lg:block lg:w-[62%]"
+        style={{ background: "var(--hero-deep)" }}
+        aria-hidden
+      />
+
       {/* Mídia de fundo: foto (ou vídeo, se HERO_VIDEO estiver preenchido) */}
       <motion.div 
         className="hero-photo absolute inset-y-0 right-0 w-full lg:w-[62%]"
@@ -225,20 +234,53 @@ export function Hero() {
       </motion.div>
 
       {/* Degradês: leitura do texto no mobile/tablet e do menu no topo */}
+
+      {/* Mobile: overlay único verde-escuro de baixo para cima (mantém legibilidade) */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 lg:hidden"
         aria-hidden
         style={{
           background:
             "linear-gradient(to top, rgba(27,42,31,0.98) 0%, rgba(27,42,31,0.95) 45%, rgba(27,42,31,0.4) 65%, rgba(27,42,31,0) 80%)",
         }}
       />
+
+      {/* Desktop: overlay esquerdo neutro (cobre a fatia do texto) */}
       <div
-        className="absolute inset-x-0 top-0 h-32 lg:h-40"
+        className="absolute inset-y-0 left-0 hidden lg:block lg:w-[38%]"
+        aria-hidden
+        style={{
+          background:
+            "linear-gradient(to right, rgba(26,26,24,1) 70%, rgba(26,26,24,0) 100%)",
+        }}
+      />
+
+      {/* Desktop: overlay direito verde (reforça contraste sobre a foto) */}
+      <div
+        className="absolute inset-y-0 right-0 hidden lg:block lg:w-[62%]"
+        aria-hidden
+        style={{
+          background:
+            "linear-gradient(to top, rgba(27,42,31,0.85) 0%, rgba(27,42,31,0.3) 50%, rgba(27,42,31,0) 80%)",
+        }}
+      />
+
+      {/* Barra de transição no topo — mobile/tablet (verde) */}
+      <div
+        className="absolute inset-x-0 top-0 h-32 lg:hidden"
         aria-hidden
         style={{
           background:
             "linear-gradient(to bottom, rgba(27,42,31,0.8), rgba(27,42,31,0))",
+        }}
+      />
+      {/* Barra de transição no topo — desktop: neutra à esquerda, verde à direita */}
+      <div
+        className="absolute inset-x-0 top-0 hidden h-40 lg:block"
+        aria-hidden
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(26,26,24,0.8) 0%, rgba(26,26,24,0) 100%)",
         }}
       />
 
