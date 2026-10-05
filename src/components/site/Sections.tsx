@@ -178,11 +178,23 @@ export function Hero() {
     "Reforço Escolar",
     "Acompanhamento Pedagógico",
   ];
+
+  // Trava a altura do hero no valor capturado no mount para evitar
+  // o "reajuste" causado pelo browser chrome aparecer/sumir no mobile.
+  const [heroH, setHeroH] = useState<number | null>(null);
+  useEffect(() => {
+    setHeroH(window.innerHeight);
+  }, []);
+
   return (
     <section
       id="inicio"
-      className="relative isolate flex min-h-[100svh] items-end overflow-hidden pb-9 pt-[calc(76px+10svh)] sm:pb-14 lg:h-[100svh] lg:min-h-[620px] lg:items-center lg:pb-6 lg:pt-[88px] perspective-container"
-      style={{ background: "var(--hero-deep)" }}
+      className="relative isolate flex items-end overflow-hidden pb-9 pt-0 sm:pt-[calc(76px+6svh)] sm:pb-14 lg:h-[100svh] lg:min-h-[620px] lg:items-center lg:pb-6 lg:pt-[88px] perspective-container"
+      style={{
+        background: "var(--hero-deep)",
+        // No mobile usa a altura travada; no lg o CSS cuida com h-[100svh]
+        minHeight: heroH ? `${heroH}px` : "100svh",
+      }}
     >
       {/* Mídia de fundo: foto (ou vídeo, se HERO_VIDEO estiver preenchido) */}
       <motion.div 
@@ -206,7 +218,7 @@ export function Hero() {
         ) : (
           <RosePhoto
             alt="Rose Santos, professora e pedagoga, sorrindo à mesa de estudos"
-            position="object-[50%_16%] sm:object-[50%_22%] lg:object-[50%_28%]"
+            position="object-[60%_16%] sm:object-[58%_22%] lg:object-[50%_28%]"
             priority={true}
           />
         )}
@@ -214,7 +226,7 @@ export function Hero() {
 
       {/* Degradês: leitura do texto no mobile/tablet e do menu no topo */}
       <div
-        className="absolute inset-0 lg:hidden"
+        className="absolute inset-0"
         aria-hidden
         style={{
           background:
@@ -230,14 +242,14 @@ export function Hero() {
         }}
       />
 
-      <div className="container-site w-full relative z-10 flex min-h-[100dvh] flex-col justify-end pb-12 pt-32 sm:block sm:min-h-0 sm:pb-0">
+      <div className="container-site w-full relative z-10 flex h-full flex-col justify-end pb-12 pt-0 sm:block sm:pb-0">
         <motion.div 
           className="max-w-[560px] lg:max-w-[580px]"
           style={{ transformStyle: "preserve-3d" }}
         >
           <motion.span
             {...fade(0.1)}
-            className="glass-premium hover-3d inline-block rounded-full px-5 py-2 text-xs font-medium tracking-wide shadow-xl"
+            className="glass-premium hover-3d inline-block rounded-full px-4 py-1.5 text-[11px] font-medium tracking-wide shadow-xl sm:px-5 sm:py-2 sm:text-xs"
             style={{ color: "#fff" }}
           >
             Aulas particulares · Online · Presencial
@@ -245,7 +257,7 @@ export function Hero() {
 
           <motion.h1
             {...fade(0.2, 40)}
-            className="hero-title mt-4 sm:mt-5 lg:mt-7"
+            className="hero-title mt-3 sm:mt-5 lg:mt-7"
             style={{ color: "#fff", textShadow: "0 10px 30px rgba(0,0,0,0.5)" }}
           >
             Aprender pode ser mais fácil quando encontramos o{" "}
@@ -254,21 +266,22 @@ export function Hero() {
 
           <motion.p
             {...fade(0.35)}
-            className="mt-4 max-w-[520px] text-[15px] font-light leading-relaxed sm:mt-5 sm:text-[18px] lg:mt-7"
-            style={{ color: "rgba(255,255,255,0.95)" }}
+            className="mt-3 max-w-[520px] text-[14px] font-light leading-relaxed sm:mt-5 sm:text-[18px] lg:mt-7"
+            style={{ color: "rgba(255,255,255,0.92)" }}
           >
             Acompanhamento escolar personalizado,
             respeitando o ritmo e as potencialidades de cada aluno.
           </motion.p>
 
+          {/* Specs: compactas no mobile, expandidas do sm em diante */}
           <motion.p
             {...fade(0.45, 0)}
-            className="mt-6 hidden flex-wrap gap-x-3 gap-y-2 text-[14px] sm:flex"
-            style={{ color: "rgba(255,255,255,0.85)" }}
+            className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-[12px] sm:mt-6 sm:gap-x-3 sm:gap-y-2 sm:text-[14px]"
+            style={{ color: "rgba(255,255,255,0.80)" }}
           >
             {specs.map((s, i) => (
-              <span key={s} className="flex items-center gap-2">
-                {i > 0 && <span style={{ color: "var(--sage-light)" }}>•</span>}
+              <span key={s} className="flex items-center gap-1.5 sm:gap-2">
+                {i > 0 && <span style={{ color: "var(--sage-light)" }}>·</span>}
                 {s}
               </span>
             ))}
@@ -276,7 +289,7 @@ export function Hero() {
 
           <motion.div
             {...fade(0.55)}
-            className="mt-8 flex flex-col items-start gap-4 sm:flex-row lg:mt-10"
+            className="mt-6 flex flex-col items-start gap-3 sm:mt-8 sm:flex-row lg:mt-10"
           >
             <a
               href={WA_LINK}

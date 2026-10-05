@@ -35,6 +35,8 @@
   }
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100%;
   }
   body {
     background-color: var(--bg-base);
@@ -42,6 +44,7 @@
     font-family: "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    max-width: 100%;
   }
   @media (prefers-reduced-motion: reduce) {
     *,
