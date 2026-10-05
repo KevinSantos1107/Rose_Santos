@@ -10,7 +10,7 @@ import {
   CtaFinal,
   Footer,
   WhatsAppFloat,
-} from "@/components/site/Sections";
+} from "./components/site/Sections";
 
 export default function App() {
   return (

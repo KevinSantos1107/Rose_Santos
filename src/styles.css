@@ -311,6 +311,51 @@
     transform-origin: left;
   }
 
+  /* ── Hero section: mobile-first layout ── */
+  .hero-section {
+    /* Mobile: full-screen, items at bottom */
+    min-height: 100svh;
+    min-height: 100vh; /* fallback */
+    align-items: flex-end;
+  }
+  @media (min-width: 1024px) {
+    .hero-section {
+      height: 100svh;
+      min-height: 620px;
+      align-items: center;
+      padding-top: 88px;
+      padding-bottom: 24px;
+    }
+  }
+
+  /* ── Hero background media positioning ── */
+  .hero-bg-media,
+  .hero-bg-media-pos {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Face centered, top bias to keep forehead visible */
+    object-position: 50% 20%;
+  }
+  @media (min-width: 640px) {
+    .hero-bg-media,
+    .hero-bg-media-pos {
+      object-position: 50% 22%;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .hero-bg-media,
+    .hero-bg-media-pos {
+      object-position: 55% 18%;
+    }
+  }
+  @media (min-width: 1024px) {
+    .hero-bg-media,
+    .hero-bg-media-pos {
+      object-position: 50% 28%;
+    }
+  }
+
   .hero-photo {
     animation: hero-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -321,10 +366,196 @@
     }
   }
 
+  /* ── Hero overlay mobile: gentle bottom gradient only ── */
+  .hero-overlay-mobile {
+    position: absolute;
+    inset: 0;
+    /* Transparent on top (face visible), dark green only at the bottom */
+    background: linear-gradient(
+      to top,
+      rgba(27, 42, 31, 0.97) 0%,
+      rgba(27, 42, 31, 0.88) 28%,
+      rgba(27, 42, 31, 0.45) 48%,
+      rgba(27, 42, 31, 0.08) 62%,
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  /* ── Hero content: mobile (<1024px) ── */
+  .hero-content-mobile {
+    min-height: 100svh;
+    min-height: 100vh; /* fallback */
+    padding: 0 20px;
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+    padding-top: max(60px, env(safe-area-inset-top));
+  }
+
+  .hero-content-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 480px;
+  }
+
+  /* ── Title mobile ── */
+  .hero-title-mobile {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-size: clamp(1.75rem, 7.5vw, 2.5rem);
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    text-wrap: balance;
+  }
+  .hero-title-mobile em {
+    font-style: italic;
+  }
+
+  /* ── Subtitle mobile ── */
+  .hero-subtitle-mobile {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
+    font-weight: 300;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 400px;
+    text-wrap: pretty;
+  }
+
+  /* ── CTA primary ── */
+  .hero-cta-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    height: 52px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #1b2a1f;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    margin-top: 4px;
+    text-decoration: none;
+  }
+  .hero-cta-primary:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  }
+  .hero-cta-primary:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  /* ── CTA secondary (text link) ── */
+  .hero-cta-secondary {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    padding: 6px 0;
+    transition: color 0.2s ease;
+  }
+  .hero-cta-secondary:active {
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .hero-cta-secondary:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ── Microcopy ── */
+  .hero-microcopy {
+    font-size: 0.8125rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding-top: 4px;
+  }
+
+  /* ── Tablet (540–768px): slightly larger content area ── */
+  @media (min-width: 540px) {
+    .hero-content-mobile {
+      padding-inline: 32px;
+    }
+    .hero-content-inner {
+      gap: 14px;
+      max-width: 420px;
+    }
+  }
+
+  /* ── Tablet portrait (768–1023px): text left-aligned, rosto livre ── */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .hero-content-mobile {
+      padding-inline: 40px;
+    }
+    .hero-content-inner {
+      max-width: 400px;
+      gap: 16px;
+    }
+    .hero-cta-primary {
+      max-width: 320px;
+    }
+    .hero-cta-secondary {
+      text-align: left;
+      width: auto;
+    }
+    .hero-microcopy {
+      text-align: left;
+    }
+  }
+
+  /* ── Landscape phones (height < 500px): compact sizes ── */
+  @media (max-height: 500px) and (max-width: 1023px) {
+    .hero-section {
+      min-height: auto;
+    }
+    .hero-content-mobile {
+      min-height: auto;
+      padding-top: 56px;
+      padding-bottom: 12px;
+    }
+    .hero-title-mobile {
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+    }
+    .hero-subtitle-mobile {
+      font-size: 0.875rem;
+    }
+    .hero-cta-primary {
+      height: 44px;
+      font-size: 0.875rem;
+    }
+    .hero-content-inner {
+      gap: 8px;
+    }
+    /* Allow scrolling in landscape */
+    .hero-overlay-mobile {
+      background: linear-gradient(
+        to top,
+        rgba(27, 42, 31, 0.95) 0%,
+        rgba(27, 42, 31, 0.7) 40%,
+        rgba(27, 42, 31, 0.2) 65%,
+        transparent 80%
+      );
+    }
+  }
+
   .hero-tagline {
     display: none;
   }
-  @media (min-width: 640px) {
+  @media (min-width: 1024px) {
     .hero-tagline {
       display: block;
     }
@@ -490,4 +721,101 @@
 
 .perspective-container {
   perspective: 1200px;
+}
+
+/* ---- Hero: tópicos (matérias + modalidade) ---- */
+/* A altura deste bloco foi calibrada para ocupar o mesmo espaço da linha
+   de tópicos original, mantendo o respiro entre o cabeçalho e o título. */
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(181, 204, 175, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.hero-chip svg {
+  color: var(--sage-light);
+  flex-shrink: 0;
+}
+/* "Reforço Escolar" só aparece a partir do sm */
+.hero-chip--extra {
+  display: none;
+}
+
+.hero-modality {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 4px 9px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.92);
+  background: linear-gradient(
+    120deg,
+    rgba(201, 168, 76, 0.20) 0%,
+    rgba(201, 168, 76, 0.07) 100%
+  );
+  border: 1px solid rgba(228, 201, 122, 0.45);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.hero-modality__title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--gold-light);
+}
+.hero-modality__divider {
+  width: 1px;
+  height: 12px;
+  background: rgba(228, 201, 122, 0.45);
+}
+.hero-modality__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+.hero-modality__mode svg {
+  color: var(--gold-light);
+  width: 12px;
+  height: 12px;
+}
+
+@media (min-width: 640px) {
+  .hero-chip {
+    gap: 7px;
+    padding: 4px 12px;
+    font-size: 13px;
+  }
+  .hero-chip--extra {
+    display: inline-flex;
+  }
+  .hero-modality {
+    padding: 5px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    gap: 6px 14px;
+  }
+  .hero-modality__title {
+    font-size: 17px;
+  }
+  .hero-modality__divider {
+    height: 14px;
+  }
+  .hero-modality__mode svg {
+    width: 13px;
+    height: 13px;
+  }
 }

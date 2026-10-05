@@ -15,8 +15,10 @@ import {
   Mail,
   Menu,
   X,
+  Monitor,
+  MapPin,
 } from "lucide-react";
-import { WA_LINK, HERO_VIDEO } from "@/lib/constants";
+import { WA_LINK, HERO_VIDEO } from "../../lib/constants";
 import { Reveal, Stagger, Item, itemVariants, RosePhoto } from "./Motion";
 
 const links = [
@@ -32,7 +34,15 @@ const links = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const onHero = !scrolled && !open;
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 60);
@@ -44,6 +54,9 @@ export function Header() {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
   }, [open]);
+
+  const onHero = !scrolled && !open;
+  const isWhite = onHero;
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
@@ -58,13 +71,19 @@ export function Header() {
         <a href="#inicio" className="flex flex-col leading-tight">
           <span
             className="font-serif text-[20px] font-medium tracking-wide transition-colors duration-500 sm:text-[22px]"
-            style={{ color: onHero ? "#fff" : "var(--text-primary)" }}
+            style={{ 
+              color: isWhite ? "#fff" : "var(--text-primary)",
+              textShadow: isWhite ? "0 2px 12px rgba(0,0,0,0.4)" : "none"
+            }}
           >
             ROSE SANTOS
           </span>
           <span
             className="text-[10px] font-light tracking-[0.18em] transition-colors duration-500 sm:text-[11px]"
-            style={{ color: onHero ? "rgba(255,255,255,0.75)" : "var(--text-muted)" }}
+            style={{ 
+              color: isWhite ? "rgba(255,255,255,0.85)" : "var(--text-muted)",
+              textShadow: isWhite ? "0 2px 8px rgba(0,0,0,0.4)" : "none"
+            }}
           >
             Professora • Pedagoga
           </span>
@@ -75,7 +94,7 @@ export function Header() {
             <a
               key={h}
               href={h}
-              className={`nav-link ${onHero ? "nav-link-light" : ""}`}
+              className={`nav-link ${isWhite ? "nav-link-light" : ""}`}
             >
               {l}
             </a>
@@ -90,7 +109,7 @@ export function Header() {
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
-            className={`${onHero ? "btn-hero" : "btn-sage"} !hidden !min-h-[40px] !px-5 !text-sm lg:!inline-flex`}
+            className={`${isWhite ? "btn-hero" : "btn-sage"} !hidden !min-h-[40px] !px-5 !text-sm lg:!inline-flex`}
           >
             Fale comigo
           </motion.a>
@@ -101,18 +120,15 @@ export function Header() {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92, rotate: 90 }}
             transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            className="flex h-10 w-10 items-center justify-center rounded-full lg:hidden"
+            className="flex h-10 w-10 items-center justify-center lg:hidden"
             style={{
-              border: onHero
-                ? "1px solid rgba(255,255,255,0.35)"
-                : "1px solid var(--border-subtle)",
-              background: onHero
-                ? "rgba(255,255,255,0.12)"
-                : "rgba(143,175,139,0.1)",
-              color: onHero ? "#fff" : "var(--text-primary)",
+              background: "transparent",
+              border: "none",
+              color: isWhite ? "#fff" : "var(--text-primary)",
+              filter: isWhite ? "drop-shadow(0 2px 8px rgba(0,0,0,0.3))" : "none"
             }}
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            {open ? <X size={24} /> : <Menu size={24} />}
           </motion.button>
         </div>
       </motion.div>
@@ -171,50 +187,59 @@ const fade = (delay: number, y = 20) => ({
   },
 });
 
+/* Mobile-optimised stagger: lighter animation (opacity + translateY only) */
+const fadeMobile = (delay: number, y = 12) => ({
+  initial: { opacity: 0, y },
+  animate: { opacity: 1, y: 0 },
+  transition: {
+    duration: 0.7,
+    delay,
+    ease: [0.22, 1, 0.36, 1] as const,
+  },
+});
+
 export function Hero() {
-  const specs = [
-    "Português",
-    "Alfabetização",
-    "Reforço Escolar",
-    "Acompanhamento Pedagógico",
+  const subjects = [
+    { label: "Português", Icon: BookOpen },
+    { label: "Alfabetização", Icon: PenLine },
+    { label: "Reforço Escolar", Icon: NotebookText },
   ];
 
   // Trava a altura do hero no valor capturado no mount para evitar
   // o "reajuste" causado pelo browser chrome aparecer/sumir no mobile.
   const [heroH, setHeroH] = useState<number | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
   useEffect(() => {
     setHeroH(window.innerHeight);
+    const mq = window.matchMedia("(min-width: 1024px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
   }, []);
+
+  /* Choose animation helper based on viewport */
+  const f = isDesktop ? fade : fadeMobile;
 
   return (
     <section
       id="inicio"
-      className="relative isolate flex items-end overflow-hidden pb-9 pt-0 sm:pt-[calc(76px+6svh)] sm:pb-14 lg:h-[100svh] lg:min-h-[620px] lg:items-center lg:pb-6 lg:pt-[88px] perspective-container"
+      className="hero-section relative isolate flex overflow-hidden perspective-container"
       style={{
-        // No desktop: metade esquerda (texto) neutra, metade direita (foto) verde
-        // No mobile: fundo neutro escuro uniforme
-        background: "var(--hero-neutral)",
-        // No mobile usa a altura travada; no lg o CSS cuida com h-[100svh]
+        background: "var(--hero-deep)",
         minHeight: heroH ? `${heroH}px` : "100svh",
       }}
     >
-      {/* No desktop: faixa verde cobre apenas a metade direita (onde fica a foto) */}
-      <div
-        className="absolute inset-y-0 right-0 hidden lg:block lg:w-[62%]"
-        style={{ background: "var(--hero-deep)" }}
-        aria-hidden
-      />
-
       {/* Mídia de fundo: foto (ou vídeo, se HERO_VIDEO estiver preenchido) */}
-      <motion.div 
-        className="hero-photo absolute inset-y-0 right-0 w-full lg:w-[62%]"
+      <motion.div
+        className="hero-photo absolute inset-0 lg:inset-y-0 lg:right-0 lg:left-auto lg:w-[62%]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         {HERO_VIDEO ? (
           <video
-            className="h-full w-full object-cover object-[50%_20%] lg:object-[50%_28%]"
+            className="hero-bg-media"
             src={HERO_VIDEO}
             poster="/rose-santos.jpg"
             autoPlay
@@ -227,80 +252,88 @@ export function Hero() {
         ) : (
           <RosePhoto
             alt="Rose Santos, professora e pedagoga, sorrindo à mesa de estudos"
-            position="object-[60%_16%] sm:object-[58%_22%] lg:object-[50%_28%]"
+            position="hero-bg-media-pos"
             priority={true}
           />
         )}
       </motion.div>
 
-      {/* Degradês: leitura do texto no mobile/tablet e do menu no topo */}
+      {/* === OVERLAY MOBILE: gradiente suave só na parte inferior === */}
+      <div className="hero-overlay-mobile lg:hidden" aria-hidden />
 
-      {/* Mobile: overlay único verde-escuro de baixo para cima (mantém legibilidade) */}
+      {/* === OVERLAYS DESKTOP (inalterados) === */}
       <div
-        className="absolute inset-0 lg:hidden"
+        className="absolute inset-y-0 left-0 hidden lg:block"
         aria-hidden
         style={{
-          background:
-            "linear-gradient(to top, rgba(27,42,31,0.98) 0%, rgba(27,42,31,0.95) 45%, rgba(27,42,31,0.4) 65%, rgba(27,42,31,0) 80%)",
+          width: "42%",
+          background: "linear-gradient(to right, rgba(27,42,31,1) 0%, rgba(27,42,31,1) 75%, rgba(27,42,31,0) 100%)",
         }}
       />
-
-      {/* Desktop: overlay esquerdo neutro (cobre a fatia do texto) */}
-      <div
-        className="absolute inset-y-0 left-0 hidden lg:block lg:w-[38%]"
-        aria-hidden
-        style={{
-          background:
-            "linear-gradient(to right, rgba(26,26,24,1) 70%, rgba(26,26,24,0) 100%)",
-        }}
-      />
-
-      {/* Desktop: overlay direito verde (reforça contraste sobre a foto) */}
-      <div
-        className="absolute inset-y-0 right-0 hidden lg:block lg:w-[62%]"
-        aria-hidden
-        style={{
-          background:
-            "linear-gradient(to top, rgba(27,42,31,0.85) 0%, rgba(27,42,31,0.3) 50%, rgba(27,42,31,0) 80%)",
-        }}
-      />
-
-      {/* Barra de transição no topo — mobile/tablet (verde) */}
-      <div
-        className="absolute inset-x-0 top-0 h-32 lg:hidden"
-        aria-hidden
-        style={{
-          background:
-            "linear-gradient(to bottom, rgba(27,42,31,0.8), rgba(27,42,31,0))",
-        }}
-      />
-      {/* Barra de transição no topo — desktop: neutra à esquerda, verde à direita */}
       <div
         className="absolute inset-x-0 top-0 hidden h-40 lg:block"
         aria-hidden
         style={{
-          background:
-            "linear-gradient(to bottom, rgba(26,26,24,0.8) 0%, rgba(26,26,24,0) 100%)",
+          background: "linear-gradient(to right, rgba(27,42,31,0.9) 0%, rgba(27,42,31,0.9) 38%, rgba(27,42,31,0) 65%)",
         }}
       />
 
-      <div className="container-site w-full relative z-10 flex h-full flex-col justify-end pb-12 pt-0 sm:block sm:pb-0">
-        <motion.div 
-          className="max-w-[560px] lg:max-w-[580px]"
+      {/* ── CONTEÚDO MOBILE (<1024px) ── */}
+      <div className="hero-content-mobile relative z-10 flex w-full flex-col justify-end lg:hidden">
+        <div className="hero-content-inner">
+          <motion.h1
+            {...f(0.15)}
+            className="hero-title-mobile"
+          >
+            Aprender fica mais fácil com o{" "}
+            <em className="gold-italic-hero">caminho certo.</em>
+          </motion.h1>
+
+          <motion.p
+            {...f(0.23)}
+            className="hero-subtitle-mobile"
+          >
+            Aulas particulares de Português e Alfabetização, online ou presencial.
+          </motion.p>
+
+          <motion.a
+            {...f(0.31)}
+            href={WA_LINK}
+            target="_blank"
+            rel="noreferrer"
+            className="hero-cta-primary"
+          >
+            <MessageCircle size={20} strokeWidth={2} aria-hidden />
+            Falar no WhatsApp
+          </motion.a>
+
+          <motion.a
+            {...f(0.39)}
+            href="#sobre"
+            className="hero-cta-secondary"
+          >
+            Conheça meu trabalho ↓
+          </motion.a>
+
+          <motion.p
+            {...f(0.47)}
+            className="hero-microcopy"
+          >
+            Mais confiança para aprender. Mais segurança para avançar.
+          </motion.p>
+        </div>
+      </div>
+
+      {/* ── CONTEÚDO DESKTOP (≥1024px — preservado) ── */}
+      <div className="container-site w-full relative z-10 hidden h-full flex-col justify-end pb-[max(1rem,env(safe-area-inset-bottom))] lg:flex lg:items-start lg:justify-center lg:pb-6 lg:pt-[88px]">
+        <motion.div
+          className="max-w-[580px]"
           style={{ transformStyle: "preserve-3d" }}
         >
-          <motion.span
-            {...fade(0.1)}
-            className="glass-premium hover-3d inline-block rounded-full px-4 py-1.5 text-[11px] font-medium tracking-wide shadow-xl sm:px-5 sm:py-2 sm:text-xs"
-            style={{ color: "#fff" }}
-          >
-            Aulas particulares · Online · Presencial
-          </motion.span>
-
           <motion.h1
             {...fade(0.2, 40)}
-            className="hero-title mt-3 sm:mt-5 lg:mt-7"
-            style={{ color: "#fff", textShadow: "0 10px 30px rgba(0,0,0,0.5)" }}
+            className="hero-title lg:mt-[40px]"
+            style={{ color: "#fff", textShadow: "0 4px 20px rgba(0,0,0,0.6)" }}
           >
             Aprender pode ser mais fácil quando encontramos o{" "}
             <span className="gold-italic-hero">caminho certo.</span>
@@ -308,48 +341,64 @@ export function Hero() {
 
           <motion.p
             {...fade(0.35)}
-            className="mt-3 max-w-[520px] text-[14px] font-light leading-relaxed sm:mt-5 sm:text-[18px] lg:mt-7"
-            style={{ color: "rgba(255,255,255,0.92)" }}
+            className="mt-5 max-w-[520px] text-[19px] font-light leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.95)" }}
           >
             Acompanhamento escolar personalizado,
             respeitando o ritmo e as potencialidades de cada aluno.
           </motion.p>
 
-          {/* Specs: compactas no mobile, expandidas do sm em diante */}
-          <motion.p
-            {...fade(0.45, 0)}
-            className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-[12px] sm:mt-6 sm:gap-x-3 sm:gap-y-2 sm:text-[14px]"
-            style={{ color: "rgba(255,255,255,0.80)" }}
-          >
-            {specs.map((s, i) => (
-              <span key={s} className="flex items-center gap-1.5 sm:gap-2">
-                {i > 0 && <span style={{ color: "var(--sage-light)" }}>·</span>}
-                {s}
+          {/* Tópicos: chips + modalidade (apenas desktop) */}
+          <div className="mt-7">
+            <ul className="flex flex-wrap gap-2.5">
+              {subjects.map(({ label, Icon }, i) => (
+                <motion.li
+                  key={label}
+                  {...fade(0.42 + i * 0.07, 12)}
+                  className="hero-chip"
+                >
+                  <Icon size={14} strokeWidth={1.8} aria-hidden />
+                  {label}
+                </motion.li>
+              ))}
+            </ul>
+
+            <motion.div
+              {...fade(0.66, 12)}
+              className="hero-modality mt-3"
+            >
+              <span className="hero-modality__title">Aulas particulares</span>
+              <span className="hero-modality__divider" aria-hidden />
+              <span className="hero-modality__mode">
+                <Monitor strokeWidth={1.8} aria-hidden /> Online
               </span>
-            ))}
-          </motion.p>
+              <span className="hero-modality__mode">
+                <MapPin strokeWidth={1.8} aria-hidden /> Presencial
+              </span>
+            </motion.div>
+          </div>
 
           <motion.div
-            {...fade(0.55)}
-            className="mt-6 flex flex-col items-start gap-3 sm:mt-8 sm:flex-row lg:mt-10"
+            {...fade(0.8)}
+            className="mt-8 flex flex-row items-center gap-4"
           >
             <a
               href={WA_LINK}
               target="_blank"
               rel="noreferrer"
-              className="btn-hero w-full sm:w-auto"
+              className="btn-hero"
             >
               <MessageCircle size={20} /> Fale comigo pelo WhatsApp
             </a>
-            <a href="#sobre" className="btn-ghost-light hidden w-full sm:w-auto sm:inline-flex">
+            <a href="#sobre" className="btn-ghost-light inline-flex">
               Conheça meu trabalho
             </a>
           </motion.div>
 
           <motion.p
-            {...fade(0.7, 0)}
-            className="hero-tagline mt-8 text-[15px] font-light italic"
-            style={{ color: "rgba(255,255,255,0.75)" }}
+            {...fade(0.95, 0)}
+            className="hero-tagline mt-10 text-[15.5px] font-light italic"
+            style={{ color: "rgba(255,255,255,0.7)" }}
           >
             Mais confiança para aprender. Mais segurança para avançar.
           </motion.p>
