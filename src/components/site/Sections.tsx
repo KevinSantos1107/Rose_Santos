@@ -262,20 +262,13 @@ export function Hero() {
       {/* === OVERLAY MOBILE: gradiente suave só na parte inferior === */}
       <div className="hero-overlay-mobile lg:hidden" aria-hidden />
 
-      {/* === OVERLAYS DESKTOP (inalterados) === */}
+      {/* === OVERLAYS DESKTOP === */}
       <div
         className="absolute inset-y-0 left-0 hidden lg:block"
         aria-hidden
         style={{
           width: "42%",
           background: "linear-gradient(to right, rgba(42,18,22,1) 0%, rgba(42,18,22,1) 75%, rgba(42,18,22,0) 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-x-0 top-0 hidden h-40 lg:block"
-        aria-hidden
-        style={{
-          background: "linear-gradient(to right, rgba(42,18,22,0.9) 0%, rgba(42,18,22,0.9) 38%, rgba(42,18,22,0) 65%)",
         }}
       />
 
