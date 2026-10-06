@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { WA_LINK, HERO_VIDEO } from "../../lib/constants";
 import { Reveal, Stagger, Item, itemVariants, RosePhoto } from "./Motion";
+import { TestimonialsCarousel } from "./TestimonialsCarousel";
 
 const links = [
   ["Início", "#inicio"],
@@ -989,31 +990,11 @@ export function Testimonials() {
         >
           Depoimentos
         </motion.span>
-        <h2 className="display-md" style={{ color: "var(--text-primary)" }}>
+        <h2 className="display-md mb-12" style={{ color: "var(--text-primary)" }}>
           O que pais e alunos <span className="gold-italic">dizem</span>
         </h2>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-10 flex flex-col items-center gap-5 rounded-3xl p-14 relative overflow-hidden"
-          style={{
-            background: "var(--bg-cream)",
-            border: "1px dashed rgba(178,58,72,0.4)",
-            boxShadow: "0 4px 32px rgba(43,36,38,0.04)",
-          }}
-        >
-          <motion.div
-            animate={{ y: [0, -8, 0], rotate: [0, 5, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <MessageSquareQuote size={40} style={{ color: "var(--brand)" }} />
-          </motion.div>
-          <p className="text-base font-light italic max-w-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
-            Os depoimentos de pais e alunos serão apresentados aqui em breve.
-          </p>
-        </motion.div>
+        
+        <TestimonialsCarousel />
       </Reveal>
     </section>
   );
