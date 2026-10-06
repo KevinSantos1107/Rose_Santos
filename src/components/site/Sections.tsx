@@ -109,7 +109,7 @@ export function Header() {
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
-            className={`${isWhite ? "btn-hero" : "btn-sage"} !hidden !min-h-[40px] !px-5 !text-sm lg:!inline-flex`}
+            className={`${isWhite ? "btn-hero" : "btn-brand"} !hidden !min-h-[40px] !px-5 !text-sm lg:!inline-flex`}
           >
             Fale comigo
           </motion.a>
@@ -142,7 +142,7 @@ export function Header() {
           style={{
             border: "1px solid var(--border-subtle)",
             background: "var(--bg-base)",
-            boxShadow: "0 8px 32px rgba(44,44,42,0.10)",
+            boxShadow: "0 8px 32px rgba(43,36,38,0.10)",
           }}
         >
           {links.map(([l, h]) => (
@@ -153,7 +153,7 @@ export function Header() {
               className="block rounded-xl px-4 py-3 text-[15px] transition-colors"
               style={{ color: "var(--text-primary)" }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(143,175,139,0.08)")
+                (e.currentTarget.style.background = "rgba(178,58,72,0.08)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.background = "transparent")
@@ -166,7 +166,7 @@ export function Header() {
             href={WA_LINK}
             target="_blank"
             rel="noreferrer"
-            className="btn-sage mt-2 w-full"
+            className="btn-brand mt-2 w-full"
           >
             <MessageCircle size={18} /> Fale comigo pelo WhatsApp
           </a>
@@ -267,14 +267,14 @@ export function Hero() {
         aria-hidden
         style={{
           width: "42%",
-          background: "linear-gradient(to right, rgba(27,42,31,1) 0%, rgba(27,42,31,1) 75%, rgba(27,42,31,0) 100%)",
+          background: "linear-gradient(to right, rgba(42,18,22,1) 0%, rgba(42,18,22,1) 75%, rgba(42,18,22,0) 100%)",
         }}
       />
       <div
         className="absolute inset-x-0 top-0 hidden h-40 lg:block"
         aria-hidden
         style={{
-          background: "linear-gradient(to right, rgba(27,42,31,0.9) 0%, rgba(27,42,31,0.9) 38%, rgba(27,42,31,0) 65%)",
+          background: "linear-gradient(to right, rgba(42,18,22,0.9) 0%, rgba(42,18,22,0.9) 38%, rgba(42,18,22,0) 65%)",
         }}
       />
 
@@ -438,18 +438,18 @@ export function About() {
             className="absolute -top-14 left-1/2 h-14 w-px -translate-x-1/2 lg:left-10 lg:translate-x-0"
             style={{
               background:
-                "linear-gradient(to bottom, transparent, var(--sage))",
+                "linear-gradient(to bottom, transparent, var(--brand))",
             }}
             aria-hidden
           />
           <div
             className="absolute -left-3 -top-3 h-full w-full rounded-[24px] sm:-left-4 sm:-top-4"
-            style={{ border: "1px solid rgba(143,175,139,0.5)" }}
+            style={{ border: "1px solid rgba(178,58,72,0.5)" }}
             aria-hidden
           />
           <div
             className="relative aspect-[4/5] overflow-hidden rounded-[24px]"
-            style={{ boxShadow: "0 8px 32px rgba(44,44,42,0.10)" }}
+            style={{ boxShadow: "0 8px 32px rgba(43,36,38,0.10)" }}
           >
             <RosePhoto alt="Rose Santos em atendimento pedagógico" srcBase="/rose-sobre" position="object-[50%_30%]" />
           </div>
@@ -479,7 +479,7 @@ export function About() {
 
         {/* Coluna texto */}
         <Stagger>
-          <Item variants={itemVariants} className="label-sm" style={{ color: "var(--sage-dark)" }}>
+          <Item variants={itemVariants} className="label-sm" style={{ color: "var(--brand-dark)" }}>
             Sobre mim
           </Item>
           <Item variants={itemVariants}>
@@ -587,7 +587,7 @@ export function Services() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="label-sm inline-block mb-3"
-            style={{ color: "var(--sage-dark)" }}
+            style={{ color: "var(--brand-dark)" }}
           >
             O que ofereço
           </motion.span>
@@ -621,7 +621,7 @@ export function Services() {
               style={{
                 border: "1px solid var(--border-warm)",
                 background: "var(--bg-base)",
-                boxShadow: "0 2px 20px rgba(44,44,42,0.06)",
+                boxShadow: "0 2px 20px rgba(43,36,38,0.06)",
                 transformStyle: "preserve-3d",
                 perspective: "800px",
                 willChange: "transform",
@@ -632,11 +632,11 @@ export function Services() {
                 transition={{ duration: 0.35, type: "spring", stiffness: 300 }}
                 className="flex h-12 w-12 items-center justify-center rounded-2xl"
                 style={{
-                  background: "linear-gradient(135deg, rgba(143,175,139,0.2) 0%, rgba(107,143,102,0.15) 100%)",
-                  boxShadow: "0 4px 12px rgba(143,175,139,0.2)",
+                  background: "linear-gradient(135deg, rgba(178,58,72,0.2) 0%, rgba(140,43,56,0.15) 100%)",
+                  boxShadow: "0 4px 12px rgba(178,58,72,0.2)",
                 }}
               >
-                <Icon size={24} style={{ color: "var(--sage-dark)" }} />
+                <Icon size={24} style={{ color: "var(--brand-dark)" }} />
               </motion.div>
               <h3
                 className="mt-5 font-serif text-xl font-medium"
@@ -653,7 +653,7 @@ export function Services() {
               {/* Linha de hover animada */}
               <motion.div
                 className="mt-5 h-0.5 w-0 rounded-full"
-                style={{ background: "var(--sage)" }}
+                style={{ background: "var(--brand)" }}
                 whileHover={{ width: "100%" }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               />
@@ -686,7 +686,7 @@ export function Methodology() {
     <section
       id="metodologia"
       className="section-y"
-      style={{ background: "var(--bg-sage-section)" }}
+      style={{ background: "var(--bg-tint-section)" }}
     >
       <div className="container-site">
         <Reveal>
@@ -696,7 +696,7 @@ export function Methodology() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="label-sm inline-block mb-3"
-            style={{ color: "var(--sage-dark)" }}
+            style={{ color: "var(--brand-dark)" }}
           >
             Metodologia
           </motion.span>
@@ -739,8 +739,8 @@ export function Methodology() {
                   background: "rgba(255,255,255,0.55)",
                   backdropFilter: "blur(10px)",
                   WebkitBackdropFilter: "blur(10px)",
-                  border: "1px solid rgba(143,175,139,0.25)",
-                  boxShadow: "0 4px 24px rgba(44,44,42,0.06), inset 0 1px 0 rgba(255,255,255,0.7)",
+                  border: "1px solid rgba(178,58,72,0.25)",
+                  boxShadow: "0 4px 24px rgba(43,36,38,0.06), inset 0 1px 0 rgba(255,255,255,0.7)",
                 }}
               >
                 {/* Número visível principal — dourado */}
@@ -794,7 +794,7 @@ export function Differentials() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="label-sm inline-block mb-3"
-            style={{ color: "var(--sage-dark)" }}
+            style={{ color: "var(--brand-dark)" }}
           >
             Diferenciais
           </motion.span>
@@ -827,8 +827,8 @@ export function Differentials() {
                 transition: "border-color 0.3s, box-shadow 0.3s",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(143,175,139,0.35)";
-                e.currentTarget.style.boxShadow = "0 4px 20px rgba(143,175,139,0.12)";
+                e.currentTarget.style.borderColor = "rgba(178,58,72,0.35)";
+                e.currentTarget.style.boxShadow = "0 4px 20px rgba(178,58,72,0.12)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = "transparent";
@@ -842,11 +842,11 @@ export function Differentials() {
                 transition={{ delay: 0.1 + idx * 0.07, duration: 0.4, type: "spring", stiffness: 250 }}
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
                 style={{
-                  background: "linear-gradient(135deg, rgba(143,175,139,0.25), rgba(107,143,102,0.15))",
-                  boxShadow: "0 0 12px rgba(143,175,139,0.3)",
+                  background: "linear-gradient(135deg, rgba(178,58,72,0.25), rgba(140,43,56,0.15))",
+                  boxShadow: "0 0 12px rgba(178,58,72,0.3)",
                 }}
               >
-                <CircleCheck size={18} style={{ color: "var(--sage-dark)", flexShrink: 0 }} />
+                <CircleCheck size={18} style={{ color: "var(--brand-dark)", flexShrink: 0 }} />
               </motion.div>
               <span className="text-[15px] font-medium" style={{ color: "var(--text-primary)" }}>
                 {d}
@@ -886,7 +886,7 @@ function EduGroup({
     <div className="mt-14">
       <motion.p
         className="label-sm"
-        style={{ color: "var(--sage-dark)" }}
+        style={{ color: "var(--brand-dark)" }}
         initial={{ opacity: 0, x: -10 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -907,28 +907,28 @@ function EduGroup({
             style={{
               border: "1px solid var(--border-warm)",
               background: "var(--bg-base)",
-              boxShadow: "0 2px 12px rgba(44,44,42,0.04)",
+              boxShadow: "0 2px 12px rgba(43,36,38,0.04)",
               transition: "box-shadow 0.3s",
               cursor: "default",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "0 8px 28px rgba(143,175,139,0.15)";
-              e.currentTarget.style.borderColor = "rgba(143,175,139,0.4)";
+              e.currentTarget.style.boxShadow = "0 8px 28px rgba(178,58,72,0.15)";
+              e.currentTarget.style.borderColor = "rgba(178,58,72,0.4)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "0 2px 12px rgba(44,44,42,0.04)";
+              e.currentTarget.style.boxShadow = "0 2px 12px rgba(43,36,38,0.04)";
               e.currentTarget.style.borderColor = "var(--border-warm)";
             }}
           >
             <motion.div
               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
               style={{
-                background: "linear-gradient(135deg, rgba(143,175,139,0.18) 0%, rgba(107,143,102,0.1) 100%)",
+                background: "linear-gradient(135deg, rgba(178,58,72,0.18) 0%, rgba(140,43,56,0.1) 100%)",
               }}
               whileHover={{ rotate: 8, scale: 1.1 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
             >
-              <Icon size={22} style={{ color: "var(--sage-dark)" }} />
+              <Icon size={22} style={{ color: "var(--brand-dark)" }} />
             </motion.div>
             <span className="text-[15px] font-medium leading-snug" style={{ color: "var(--text-primary)" }}>
               {t}
@@ -955,7 +955,7 @@ export function Education() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="label-sm inline-block mb-3"
-            style={{ color: "var(--sage-dark)" }}
+            style={{ color: "var(--brand-dark)" }}
           >
             Formação
           </motion.span>
@@ -985,7 +985,7 @@ export function Testimonials() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="label-sm inline-block mb-3"
-          style={{ color: "var(--sage-dark)" }}
+          style={{ color: "var(--brand-dark)" }}
         >
           Depoimentos
         </motion.span>
@@ -1000,15 +1000,15 @@ export function Testimonials() {
           className="mt-10 flex flex-col items-center gap-5 rounded-3xl p-14 relative overflow-hidden"
           style={{
             background: "var(--bg-cream)",
-            border: "1px dashed rgba(143,175,139,0.4)",
-            boxShadow: "0 4px 32px rgba(44,44,42,0.04)",
+            border: "1px dashed rgba(178,58,72,0.4)",
+            boxShadow: "0 4px 32px rgba(43,36,38,0.04)",
           }}
         >
           <motion.div
             animate={{ y: [0, -8, 0], rotate: [0, 5, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           >
-            <MessageSquareQuote size={40} style={{ color: "var(--sage)" }} />
+            <MessageSquareQuote size={40} style={{ color: "var(--brand)" }} />
           </motion.div>
           <p className="text-base font-light italic max-w-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
             Os depoimentos de pais e alunos serão apresentados aqui em breve.
@@ -1032,21 +1032,21 @@ export function CtaFinal() {
         animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -left-32 -top-32 h-96 w-96 rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(143,175,139,0.35) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(178,58,72,0.35) 0%, transparent 70%)" }}
         aria-hidden
       />
       <motion.div
         animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         className="absolute -right-24 -bottom-24 h-80 w-80 rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(107,143,102,0.3) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(140,43,56,0.3) 0%, transparent 70%)" }}
         aria-hidden
       />
       <motion.div
         animate={{ x: [0, 30, 0], y: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute left-1/3 top-1/4 h-64 w-64 rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(181,204,175,0.2) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(227,163,169,0.2) 0%, transparent 70%)" }}
         aria-hidden
       />
 
@@ -1054,7 +1054,7 @@ export function CtaFinal() {
         <Item variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } } }}>
           <motion.span
             className="glass-premium inline-block rounded-full px-5 py-2 text-[13px] font-medium mb-6"
-            style={{ color: "rgba(181,204,175,0.95)" }}
+            style={{ color: "rgba(227,163,169,0.95)" }}
           >
             Vamos conversar?
           </motion.span>
@@ -1162,7 +1162,7 @@ export function Footer() {
                 (e.currentTarget.style.color = "rgba(255,255,255,0.70)")
               }
             >
-              <Phone size={16} style={{ color: "var(--sage-light)" }} />
+              <Phone size={16} style={{ color: "var(--brand-light)" }} />
               +55 31 98671-8808
             </a>
             <a
@@ -1176,7 +1176,7 @@ export function Footer() {
                 (e.currentTarget.style.color = "rgba(255,255,255,0.70)")
               }
             >
-              <Mail size={16} style={{ color: "var(--sage-light)" }} />
+              <Mail size={16} style={{ color: "var(--brand-light)" }} />
               falandocomrose07@gmail.com
             </a>
           </div>
@@ -1226,9 +1226,9 @@ export function WhatsAppFloat() {
       tabIndex={show ? 0 : -1}
       className="fixed bottom-6 right-6 z-[9999] flex h-14 w-14 items-center justify-center rounded-full md:h-auto md:w-auto md:gap-2 md:px-5 md:py-3.5"
       style={{
-        background: "linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%)",
-        color: "var(--text-on-sage)",
-        boxShadow: "0 6px 28px rgba(143,175,139,0.6), 0 2px 8px rgba(0,0,0,0.1)",
+        background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%)",
+        color: "var(--text-on-brand)",
+        boxShadow: "0 6px 28px rgba(178,58,72,0.6), 0 2px 8px rgba(0,0,0,0.1)",
         pointerEvents: show ? "auto" : "none",
       }}
     >
@@ -1236,7 +1236,7 @@ export function WhatsAppFloat() {
       {show && (
         <motion.span
           className="absolute inset-0 rounded-full"
-          style={{ border: "2px solid var(--sage-light)" }}
+          style={{ border: "2px solid var(--brand-light)" }}
           animate={{ scale: [1, 1.5, 1.8], opacity: [0.6, 0.3, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
           aria-hidden
