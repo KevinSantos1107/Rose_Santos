@@ -206,6 +206,7 @@ const fadeMobile = (delay: number, y = 12) => ({
 export function Hero() {
   const subjects = [
     { label: "Acompanhamento Completo e Personalizado", Icon: BookOpen },
+    { label: "Especialista em alunos do 2º ao 6º ano", Icon: GraduationCap },
   ];
 
   // Trava a altura do hero no valor capturado no mount para evitar
@@ -289,7 +290,7 @@ export function Hero() {
             {...f(0.23)}
             className="hero-subtitle-mobile"
           >
-            Aulas particulares de Português e Alfabetização, online ou presencial.
+            Aulas particulares e acompanhamento escolar para alunos do 2º ao 6º ano.
           </motion.p>
 
           <motion.a
@@ -320,7 +321,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* ── CONTEÚDO DESKTOP (≥1024px — preservado) ── */}
+      {/* ── CONTEÚDO DESKTOP (≥1024px) ── */}
       <div className="container-site w-full relative z-10 hidden h-full flex-col justify-end pb-[max(1rem,env(safe-area-inset-bottom))] lg:flex lg:items-start lg:justify-center lg:pb-6 lg:pt-[88px]">
         <motion.div
           className="max-w-[580px]"
@@ -328,7 +329,7 @@ export function Hero() {
         >
           <motion.h1
             {...fade(0.2, 40)}
-            className="hero-title lg:mt-[40px]"
+            className="hero-title"
             style={{ color: "#fff", textShadow: "0 4px 20px rgba(0,0,0,0.6)" }}
           >
             Aprender pode ser mais fácil quando encontramos o{" "}
@@ -345,7 +346,7 @@ export function Hero() {
           </motion.p>
 
           {/* Tópicos: chips + modalidade (apenas desktop) */}
-          <div className="mt-7">
+          <div className="mt-6">
             <ul className="flex flex-wrap gap-2.5">
               {subjects.map(({ label, Icon }, i) => (
                 <motion.li
@@ -376,7 +377,7 @@ export function Hero() {
 
           <motion.div
             {...fade(0.8)}
-            className="mt-8 flex flex-row items-center gap-4"
+            className="mt-6 flex flex-row items-center gap-4"
           >
             <a
               href={WA_LINK}
@@ -943,12 +944,30 @@ const parentMessages = [
   },
   {
     id: 2,
-    name: "Mãe (Exemplo)",
-    relation: "Mãe de aluno",
+    name: "Lúcio",
+    relation: "Pai da Giovanna",
     images: [
-      "/depoimento-laurielle-3.webp",
+      "/depoimento-giovanna.webp",
     ],
-    highlight: "Excelente profissional. Recomendo demais o trabalho!",
+    highlight: "Como pai, não existe presente maior do que ver minha filha evoluindo, aprendendo e acreditando cada vez mais nela mesma.",
+  },
+  {
+    id: 3,
+    name: "Débora Alves",
+    relation: "Mãe do Heitor",
+    images: [
+      "/depoimento-heitor.webp",
+    ],
+    highlight: "Através do seu trabalho, o Heitor adquiriu confiança. Percebemos o quanto era necessário um olhar além do ensinamento.",
+  },
+  {
+    id: 4,
+    name: "Maria Luíza",
+    relation: "Mãe do Enzo",
+    images: [
+      "/depoimento-enzo.webp",
+    ],
+    highlight: "Mais do que uma excelente profissional, ela acolhe, acredita no potencial e contribui verdadeiramente para o desenvolvimento.",
   }
 ];
 
@@ -1094,7 +1113,10 @@ function MessageGallery() {
                     "{activeMsg.highlight}"
                   </p>
 
-                  <div className="flex gap-3 px-5 pb-6 overflow-x-auto scrollbar-hide sm:px-6" onPointerDown={(e) => e.stopPropagation()}>
+                  <div 
+                    className={`flex gap-3 px-5 pb-6 overflow-x-auto scrollbar-hide sm:px-6 ${activeMsg.images.length < 3 ? "justify-center" : ""}`} 
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
                     {activeMsg.images.map((src, imgIdx) => (
                       <motion.button
                         key={imgIdx}
