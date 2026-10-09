@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BookOpen,
@@ -744,6 +744,7 @@ const diffs = [
   "Identificação das principais dificuldades",
   "Fortalecimento da leitura e da escrita",
   "Foco em Fatos",
+  "Preparação para as provas",
   "Desenvolvimento da autonomia",
   "Mais confiança para participar das aulas",
 ];
@@ -823,7 +824,14 @@ const degrees = [
 ];
 const courses = [
   "MADE – Muito Além de Ensinar",
-  "TecnoAlfa – Pedagogia sem Fronteiras",
+  "Pedagoga do Futuro – Pedagogia sem Fronteiras",
+  "Psicologia da Educação",
+  "O plano de aula",
+  "Educação do Campo",
+  "Educação Inclusiva",
+  "Orientação Educacional",
+  "Psicopedagogia",
+  "Princípios e fundamentos do método Montessori para uma prática pedagógica diferenciada",
 ];
 
 function EduGroup({
@@ -847,9 +855,9 @@ function EduGroup({
       >
         {title}
       </motion.p>
-      <Stagger gap={0.09} className="mt-5 grid gap-4 md:grid-cols-2">
+      <Stagger gap={0.09} className="mt-5 grid gap-4 md:grid-cols-2 grid-flow-row-dense">
         {items.map((t, idx) => {
-          const isLastOdd = items.length % 2 === 1 && idx === items.length - 1;
+          const isLongText = t.length > 55;
           return (
           <motion.div
             key={t}
@@ -858,7 +866,7 @@ function EduGroup({
               visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
             }}
             whileHover={{ y: -5, scale: 1.015, transition: { duration: 0.25 } }}
-            className={`flex items-center gap-4 rounded-2xl px-6 py-5${isLastOdd ? " md:col-span-2 md:justify-center" : ""}`}
+            className={`flex items-center gap-4 rounded-2xl px-6 py-5 ${isLongText ? "md:col-span-2 md:justify-center" : ""}`}
             style={{
               border: "1px solid var(--border-warm)",
               background: "var(--bg-base)",
@@ -885,7 +893,7 @@ function EduGroup({
             >
               <Icon size={22} style={{ color: "var(--brand-dark)" }} />
             </motion.div>
-            <span className="text-[15px] font-medium leading-snug" style={{ color: "var(--text-primary)" }}>
+            <span className={`text-[15px] font-medium leading-snug ${isLongText ? "md:text-center" : ""}`} style={{ color: "var(--text-primary)" }}>
               {t}
             </span>
           </motion.div>
@@ -933,109 +941,246 @@ const parentMessages = [
     ],
     highlight: "Você não é apenas a professora de reforço. Você se tornou parte da nossa família.",
   },
+  {
+    id: 2,
+    name: "Mãe (Exemplo)",
+    relation: "Mãe de aluno",
+    images: [
+      "/depoimento-laurielle-3.webp",
+    ],
+    highlight: "Excelente profissional. Recomendo demais o trabalho!",
+  }
 ];
+
+const messageSlideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 380 : -380,
+    opacity: 0,
+    scale: 0.94,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 380 : -380,
+    opacity: 0,
+    scale: 0.94,
+  }),
+};
 
 function MessageGallery() {
   const [lightbox, setLightbox] = useState<{ msgIdx: number; imgIdx: number } | null>(null);
+  const [[page, direction], setPage] = useState([0, 0]);
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  const total = parentMessages.length;
+  const activeIndex = ((page % total) + total) % total;
+
+  const paginate = useCallback((newDirection: number) => {
+    setPage(([prevPage]) => [prevPage + newDirection, newDirection]);
+  }, []);
+
+  const goTo = useCallback((index: number) => {
+    const dir = index > activeIndex ? 1 : -1;
+    setPage([index, dir]);
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!galleryRef.current || lightbox !== null) return;
+      const rect = galleryRef.current.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView || total <= 1) return;
+
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        paginate(-1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        paginate(1);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [paginate, total, lightbox]);
 
   const currentMessage = lightbox !== null ? parentMessages[lightbox.msgIdx] : null;
+  const activeMsg = parentMessages[activeIndex];
+
+  const swipeConfidenceThreshold = 8000;
+  const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
 
   return (
     <>
-      <div className="mx-auto mt-10 grid w-full max-w-[900px] gap-8">
-        {parentMessages.map((msg, msgIdx) => (
-          <motion.div
-            key={msg.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* Card do depoimento */}
-            <div
-              className="overflow-hidden rounded-3xl"
+      <div
+        ref={galleryRef}
+        className="relative mx-auto mt-6 flex w-full max-w-[900px] flex-col items-center justify-center"
+      >
+        <div className="relative flex w-full items-center justify-center gap-4 md:gap-6">
+          {/* Botão Anterior */}
+          {total > 1 && (
+            <button
+              onClick={() => paginate(-1)}
+              className="z-20 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full shadow-md transition-all hover:scale-105 active:scale-95 md:flex"
               style={{
-                background: "var(--bg-cream)",
-                border: "1px solid var(--border-warm)",
-                boxShadow: "0 4px 24px rgba(43,36,38,0.06)",
+                background: "var(--bg-base)",
+                border: "1px solid rgba(178,58,72,0.25)",
+                color: "var(--brand-dark)",
+                boxShadow: "0 4px 16px rgba(43,36,38,0.10)",
               }}
             >
-              {/* Cabeçalho com nome */}
-              <div className="flex items-center gap-3 px-6 pt-6 pb-2">
+              <ChevronLeft size={22} />
+            </button>
+          )}
+
+          {/* Container do Slide */}
+          <div className="relative w-full max-w-[500px] overflow-hidden sm:rounded-3xl" style={{ minHeight: "450px" }}>
+            <AnimatePresence initial={false} custom={direction} mode="popLayout">
+              <motion.div
+                key={page}
+                custom={direction}
+                variants={messageSlideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 280, damping: 30 },
+                  opacity: { duration: 0.25 },
+                  scale: { duration: 0.3 },
+                }}
+                drag={total > 1 ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(_, { offset, velocity }) => {
+                  const swipe = swipePower(offset.x, velocity.x);
+                  if (swipe < -swipeConfidenceThreshold) paginate(1);
+                  else if (swipe > swipeConfidenceThreshold) paginate(-1);
+                }}
+                className="w-full touch-pan-y"
+              >
                 <div
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                  className="mx-auto w-full max-w-full overflow-hidden rounded-3xl"
                   style={{
-                    background: "linear-gradient(135deg, rgba(178,58,72,0.2) 0%, rgba(140,43,56,0.12) 100%)",
+                    background: "var(--bg-cream)",
+                    border: "1px solid var(--border-warm)",
+                    boxShadow: "0 4px 24px rgba(43,36,38,0.06)",
                   }}
                 >
-                  <MessageSquareQuote size={18} style={{ color: "var(--brand-dark)" }} />
-                </div>
-                <div className="text-left">
-                  <p className="text-[15px] font-semibold" style={{ color: "var(--text-primary)" }}>
-                    {msg.name}
-                  </p>
-                  <p className="text-[12px] font-light tracking-wide" style={{ color: "var(--text-muted)" }}>
-                    {msg.relation}
-                  </p>
-                </div>
-              </div>
-
-              {/* Citação destaque */}
-              <p
-                className="px-6 py-4 font-serif text-[15px] italic leading-relaxed"
-                style={{ color: "var(--text-secondary)" }}
-              >
-                "{msg.highlight}"
-              </p>
-
-              {/* Grid de prints */}
-              <div className="flex gap-3 px-6 pb-6 overflow-x-auto scrollbar-hide">
-                {msg.images.map((src, imgIdx) => (
-                  <motion.button
-                    key={imgIdx}
-                    onClick={() => setLightbox({ msgIdx, imgIdx })}
-                    whileHover={{ y: -4, scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    transition={{ duration: 0.25 }}
-                    className="group relative shrink-0 overflow-hidden rounded-2xl"
-                    style={{
-                      width: "180px",
-                      aspectRatio: "9/16",
-                      border: "2px solid rgba(178,58,72,0.15)",
-                      boxShadow: "0 4px 16px rgba(43,36,38,0.08)",
-                      cursor: "pointer",
-                    }}
-                    aria-label={`Ver mensagem ${imgIdx + 1} de ${msg.name}`}
-                  >
-                    <img
-                      src={src}
-                      alt={`Mensagem de ${msg.name} - parte ${imgIdx + 1}`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    {/* Overlay sutil no hover */}
+                  <div className="flex items-center gap-3 px-5 pt-6 pb-2 sm:px-6">
                     <div
-                      className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                      style={{ background: "rgba(42,18,22,0.25)" }}
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(178,58,72,0.2) 0%, rgba(140,43,56,0.12) 100%)",
+                      }}
                     >
-                      <div
-                        className="flex h-10 w-10 items-center justify-center rounded-full"
-                        style={{
-                          background: "rgba(255,255,255,0.2)",
-                          backdropFilter: "blur(8px)",
-                          WebkitBackdropFilter: "blur(8px)",
-                          border: "1px solid rgba(255,255,255,0.35)",
-                        }}
-                      >
-                        <Maximize size={16} className="text-white" />
-                      </div>
+                      <MessageSquareQuote size={18} style={{ color: "var(--brand-dark)" }} />
                     </div>
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
+                    <div className="text-left overflow-hidden">
+                      <p className="truncate text-[15px] font-semibold" style={{ color: "var(--text-primary)" }}>
+                        {activeMsg.name}
+                      </p>
+                      <p className="truncate text-[12px] font-light tracking-wide" style={{ color: "var(--text-muted)" }}>
+                        {activeMsg.relation}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p
+                    className="px-5 py-4 text-left font-serif text-[15px] italic leading-relaxed sm:px-6 sm:text-[16px]"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    "{activeMsg.highlight}"
+                  </p>
+
+                  <div className="flex gap-3 px-5 pb-6 overflow-x-auto scrollbar-hide sm:px-6" onPointerDown={(e) => e.stopPropagation()}>
+                    {activeMsg.images.map((src, imgIdx) => (
+                      <motion.button
+                        key={imgIdx}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLightbox({ msgIdx: activeIndex, imgIdx });
+                        }}
+                        whileHover={{ y: -4, scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        transition={{ duration: 0.25 }}
+                        className="group relative shrink-0 overflow-hidden rounded-2xl"
+                        style={{
+                          width: "160px",
+                          aspectRatio: "9/16",
+                          border: "2px solid rgba(178,58,72,0.15)",
+                          boxShadow: "0 4px 16px rgba(43,36,38,0.08)",
+                          cursor: "pointer",
+                        }}
+                        aria-label={`Ver mensagem ${imgIdx + 1} de ${activeMsg.name}`}
+                      >
+                        <img
+                          src={src}
+                          alt={`Mensagem de ${activeMsg.name} - parte ${imgIdx + 1}`}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          loading="lazy"
+                          draggable={false}
+                        />
+                        <div
+                          className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                          style={{ background: "rgba(42,18,22,0.25)" }}
+                        >
+                          <div
+                            className="flex h-10 w-10 items-center justify-center rounded-full"
+                            style={{
+                              background: "rgba(255,255,255,0.2)",
+                              backdropFilter: "blur(8px)",
+                              WebkitBackdropFilter: "blur(8px)",
+                              border: "1px solid rgba(255,255,255,0.35)",
+                            }}
+                          >
+                            <Maximize size={16} className="text-white" />
+                          </div>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Botão Próximo */}
+          {total > 1 && (
+            <button
+              onClick={() => paginate(1)}
+              className="z-20 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full shadow-md transition-all hover:scale-105 active:scale-95 md:flex"
+              style={{
+                background: "var(--bg-base)",
+                border: "1px solid rgba(178,58,72,0.25)",
+                color: "var(--brand-dark)",
+                boxShadow: "0 4px 16px rgba(43,36,38,0.10)",
+              }}
+            >
+              <ChevronRight size={22} />
+            </button>
+          )}
+        </div>
+
+        {/* Dots */}
+        {total > 1 && (
+          <div className="mt-6 flex w-full justify-center gap-1.5">
+            {parentMessages.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className="rounded-full transition-all duration-300"
+                style={{
+                  height: "4px",
+                  width: i === activeIndex ? "16px" : "4px",
+                  background: i === activeIndex ? "var(--brand)" : "rgba(178,58,72,0.2)",
+                }}
+                aria-label={`Depoimento ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ── Lightbox ── */}
