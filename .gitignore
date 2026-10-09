@@ -32,3 +32,7 @@ Thumbs.db
 
 # Vite
 .vite/
+
+# Binaries & Archives
+*.exe
+*.zip

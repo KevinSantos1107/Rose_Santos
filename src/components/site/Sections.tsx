@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   BookOpen,
   PenLine,
@@ -17,6 +17,10 @@ import {
   X,
   Monitor,
   MapPin,
+  Maximize,
+  ChevronLeft,
+  ChevronRight,
+  Play
 } from "lucide-react";
 import { WA_LINK, HERO_VIDEO } from "../../lib/constants";
 import { Reveal, Stagger, Item, itemVariants, RosePhoto } from "./Motion";
@@ -201,9 +205,7 @@ const fadeMobile = (delay: number, y = 12) => ({
 
 export function Hero() {
   const subjects = [
-    { label: "Português", Icon: BookOpen },
-    { label: "Alfabetização", Icon: PenLine },
-    { label: "Reforço Escolar", Icon: NotebookText },
+    { label: "Acompanhamento Completo e Personalizado", Icon: BookOpen },
   ];
 
   // Trava a altura do hero no valor capturado no mount para evitar
@@ -338,7 +340,7 @@ export function Hero() {
             className="mt-5 max-w-[520px] text-[19px] font-light leading-relaxed"
             style={{ color: "rgba(255,255,255,0.95)" }}
           >
-            Acompanhamento escolar personalizado,
+            Educação transformadora,
             respeitando o ritmo e as potencialidades de cada aluno.
           </motion.p>
 
@@ -473,9 +475,7 @@ export function About() {
 
         {/* Coluna texto */}
         <Stagger>
-          <Item variants={itemVariants} className="label-sm" style={{ color: "var(--brand-dark)" }}>
-            Sobre mim
-          </Item>
+
           <Item variants={itemVariants}>
             <h2 className="display-lg mt-3" style={{ color: "var(--text-primary)" }}>
               Olá, eu sou{" "}
@@ -489,7 +489,7 @@ export function About() {
           >
             <Item variants={itemVariants}>
               <p>
-                Sou professora, licenciada em Letras – Português e Pedagogia,
+                Sou professora, licenciada em Letras/Português e Pedagogia,
                 apaixonada pela educação e por ajudar cada aluno a desenvolver
                 seu potencial, respeitando seu ritmo, suas dificuldades e sua
                 forma particular de aprender.
@@ -515,7 +515,7 @@ export function About() {
                 preciso acolher, compreender as dificuldades, estimular a
                 confiança e encontrar o{" "}
                 <em style={{ color: "var(--gold)", fontStyle: "italic" }}>caminho</em>{" "}
-                que facilite a aprendizagem de cada aluno.
+                que facilita a aprendizagem de cada aluno.
               </p>
             </Item>
           </div>
@@ -544,18 +544,8 @@ export function About() {
 /* ─── SERVICES ────────────────────────────────────────────── */
 const services = [
   {
-    Icon: BookOpen,
-    title: "Língua Portuguesa",
-    desc: "Leitura, escrita, interpretação de textos, gramática e produção textual.",
-  },
-  {
-    Icon: PenLine,
-    title: "Alfabetização",
-    desc: "Apoio individualizado no desenvolvimento da leitura e da escrita, respeitando o ritmo de aprendizagem.",
-  },
-  {
     Icon: NotebookText,
-    title: "Reforço Escolar",
+    title: "Desenvolvimento Escolar",
     desc: "Auxílio nos conteúdos estudados na escola, tarefas, trabalhos e preparação para avaliações.",
   },
   {
@@ -565,7 +555,7 @@ const services = [
   },
   {
     Icon: Sparkles,
-    title: "Apoio às Dificuldades de Aprendizagem",
+    title: "Jornada de Aprendizagem",
     desc: "Um olhar individualizado para compreender necessidades pedagógicas e buscar estratégias adequadas para cada aluno.",
   },
 ];
@@ -575,16 +565,6 @@ export function Services() {
     <section id="aulas" className="section-y" style={{ background: "var(--bg-base)" }}>
       <div className="container-site">
         <Reveal className="text-center md:text-left">
-          <motion.span
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="label-sm inline-block mb-3"
-            style={{ color: "var(--brand-dark)" }}
-          >
-            O que ofereço
-          </motion.span>
           <h2 className="display-lg" style={{ color: "var(--text-primary)" }}>
             Como posso <span className="gold-italic">ajudar?</span>
           </h2>
@@ -684,16 +664,7 @@ export function Methodology() {
     >
       <div className="container-site">
         <Reveal>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="label-sm inline-block mb-3"
-            style={{ color: "var(--brand-dark)" }}
-          >
-            Metodologia
-          </motion.span>
+
           <h2
             className="display-lg max-w-[600px]"
             style={{ color: "var(--text-primary)" }}
@@ -772,8 +743,8 @@ const diffs = [
   "Respeito ao ritmo de aprendizagem",
   "Identificação das principais dificuldades",
   "Fortalecimento da leitura e da escrita",
+  "Foco em Fatos",
   "Desenvolvimento da autonomia",
-  "Organização da rotina de estudos",
   "Mais confiança para participar das aulas",
 ];
 
@@ -782,16 +753,6 @@ export function Differentials() {
     <section className="section-y" style={{ background: "var(--bg-base)" }}>
       <div className="container-site grid gap-12 md:grid-cols-2 md:gap-20 items-center">
         <Reveal x={-30} y={0}>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="label-sm inline-block mb-3"
-            style={{ color: "var(--brand-dark)" }}
-          >
-            Diferenciais
-          </motion.span>
           <h2
             className="display-lg max-w-[420px]"
             style={{ color: "var(--text-primary)" }}
@@ -855,12 +816,10 @@ export function Differentials() {
 
 /* ─── EDUCATION ───────────────────────────────────────────── */
 const degrees = [
-  "Licenciatura em Letras – Português",
+  "Licenciatura em Letras/Português",
   "Licenciatura em Pedagogia",
-  "Pós-graduação em Metodologia de Ensino",
-  "Pós-graduação em Neuropsicopedagogia",
-  "Pós-graduação em Educação Especial e Inclusiva",
-  "Pós-graduação em Gestão de Equipes e Lideranças",
+  "Pós-graduação em Neuropsicopedagogia, Educação Especial e Inclusiva",
+  
 ];
 const courses = [
   "MADE – Muito Além de Ensinar",
@@ -889,7 +848,9 @@ function EduGroup({
         {title}
       </motion.p>
       <Stagger gap={0.09} className="mt-5 grid gap-4 md:grid-cols-2">
-        {items.map((t, idx) => (
+        {items.map((t, idx) => {
+          const isLastOdd = items.length % 2 === 1 && idx === items.length - 1;
+          return (
           <motion.div
             key={t}
             variants={{
@@ -897,7 +858,7 @@ function EduGroup({
               visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
             }}
             whileHover={{ y: -5, scale: 1.015, transition: { duration: 0.25 } }}
-            className="flex items-center gap-4 rounded-2xl px-6 py-5"
+            className={`flex items-center gap-4 rounded-2xl px-6 py-5${isLastOdd ? " md:col-span-2 md:justify-center" : ""}`}
             style={{
               border: "1px solid var(--border-warm)",
               background: "var(--bg-base)",
@@ -928,7 +889,8 @@ function EduGroup({
               {t}
             </span>
           </motion.div>
-        ))}
+          );
+        })}
       </Stagger>
     </div>
   );
@@ -943,16 +905,6 @@ export function Education() {
     >
       <div className="container-site">
         <Reveal>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="label-sm inline-block mb-3"
-            style={{ color: "var(--brand-dark)" }}
-          >
-            Formação
-          </motion.span>
           <h2 className="display-lg" style={{ color: "var(--text-primary)" }}>
             Formação e aperfeiçoamento <span className="gold-italic">contínuo</span>
           </h2>
@@ -969,7 +921,253 @@ export function Education() {
 }
 
 /* ─── TESTIMONIALS ────────────────────────────────────────── */
+const parentMessages = [
+  {
+    id: 1,
+    name: "Laurielle",
+    relation: "Mãe da Thaila e do Benício",
+    images: [
+      "/depoimento-laurielle-1.webp",
+      "/depoimento-laurielle-2.webp",
+      "/depoimento-laurielle-3.webp",
+    ],
+    highlight: "Você não é apenas a professora de reforço. Você se tornou parte da nossa família.",
+  },
+];
+
+function MessageGallery() {
+  const [lightbox, setLightbox] = useState<{ msgIdx: number; imgIdx: number } | null>(null);
+
+  const currentMessage = lightbox !== null ? parentMessages[lightbox.msgIdx] : null;
+
+  return (
+    <>
+      <div className="mx-auto mt-10 grid w-full max-w-[900px] gap-8">
+        {parentMessages.map((msg, msgIdx) => (
+          <motion.div
+            key={msg.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/* Card do depoimento */}
+            <div
+              className="overflow-hidden rounded-3xl"
+              style={{
+                background: "var(--bg-cream)",
+                border: "1px solid var(--border-warm)",
+                boxShadow: "0 4px 24px rgba(43,36,38,0.06)",
+              }}
+            >
+              {/* Cabeçalho com nome */}
+              <div className="flex items-center gap-3 px-6 pt-6 pb-2">
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(178,58,72,0.2) 0%, rgba(140,43,56,0.12) 100%)",
+                  }}
+                >
+                  <MessageSquareQuote size={18} style={{ color: "var(--brand-dark)" }} />
+                </div>
+                <div className="text-left">
+                  <p className="text-[15px] font-semibold" style={{ color: "var(--text-primary)" }}>
+                    {msg.name}
+                  </p>
+                  <p className="text-[12px] font-light tracking-wide" style={{ color: "var(--text-muted)" }}>
+                    {msg.relation}
+                  </p>
+                </div>
+              </div>
+
+              {/* Citação destaque */}
+              <p
+                className="px-6 py-4 font-serif text-[15px] italic leading-relaxed"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                "{msg.highlight}"
+              </p>
+
+              {/* Grid de prints */}
+              <div className="flex gap-3 px-6 pb-6 overflow-x-auto scrollbar-hide">
+                {msg.images.map((src, imgIdx) => (
+                  <motion.button
+                    key={imgIdx}
+                    onClick={() => setLightbox({ msgIdx, imgIdx })}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ duration: 0.25 }}
+                    className="group relative shrink-0 overflow-hidden rounded-2xl"
+                    style={{
+                      width: "180px",
+                      aspectRatio: "9/16",
+                      border: "2px solid rgba(178,58,72,0.15)",
+                      boxShadow: "0 4px 16px rgba(43,36,38,0.08)",
+                      cursor: "pointer",
+                    }}
+                    aria-label={`Ver mensagem ${imgIdx + 1} de ${msg.name}`}
+                  >
+                    <img
+                      src={src}
+                      alt={`Mensagem de ${msg.name} - parte ${imgIdx + 1}`}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    {/* Overlay sutil no hover */}
+                    <div
+                      className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                      style={{ background: "rgba(42,18,22,0.25)" }}
+                    >
+                      <div
+                        className="flex h-10 w-10 items-center justify-center rounded-full"
+                        style={{
+                          background: "rgba(255,255,255,0.2)",
+                          backdropFilter: "blur(8px)",
+                          WebkitBackdropFilter: "blur(8px)",
+                          border: "1px solid rgba(255,255,255,0.35)",
+                        }}
+                      >
+                        <Maximize size={16} className="text-white" />
+                      </div>
+                    </div>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightbox !== null && currentMessage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+            style={{
+              background: "rgba(0,0,0,0.85)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+            }}
+            onClick={() => setLightbox(null)}
+          >
+            {/* Botão fechar */}
+            <button
+              onClick={() => setLightbox(null)}
+              className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full text-white transition-transform hover:scale-110"
+              style={{
+                background: "rgba(255,255,255,0.15)",
+                border: "1px solid rgba(255,255,255,0.2)",
+              }}
+              aria-label="Fechar"
+            >
+              <X size={20} />
+            </button>
+
+            {/* Navegação */}
+            <div
+              className="relative flex items-center gap-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Seta anterior */}
+              {currentMessage.images.length > 1 && (
+                <button
+                  onClick={() =>
+                    setLightbox({
+                      msgIdx: lightbox.msgIdx,
+                      imgIdx: (lightbox.imgIdx - 1 + currentMessage.images.length) % currentMessage.images.length,
+                    })
+                  }
+                  className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full text-white transition-transform hover:scale-110 md:flex"
+                  style={{
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                  }}
+                  aria-label="Imagem anterior"
+                >
+                  <ChevronLeft size={22} />
+                </button>
+              )}
+
+              {/* Imagem */}
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={lightbox.imgIdx}
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.92 }}
+                  transition={{ duration: 0.25 }}
+                  src={currentMessage.images[lightbox.imgIdx]}
+                  alt={`Mensagem de ${currentMessage.name} - parte ${lightbox.imgIdx + 1}`}
+                  className="max-h-[85vh] w-auto rounded-2xl object-contain"
+                  style={{
+                    maxWidth: "min(90vw, 420px)",
+                    boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
+                  }}
+                />
+              </AnimatePresence>
+
+              {/* Seta próxima */}
+              {currentMessage.images.length > 1 && (
+                <button
+                  onClick={() =>
+                    setLightbox({
+                      msgIdx: lightbox.msgIdx,
+                      imgIdx: (lightbox.imgIdx + 1) % currentMessage.images.length,
+                    })
+                  }
+                  className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full text-white transition-transform hover:scale-110 md:flex"
+                  style={{
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                  }}
+                  aria-label="Próxima imagem"
+                >
+                  <ChevronRight size={22} />
+                </button>
+              )}
+            </div>
+
+            {/* Indicador + info na parte inferior */}
+            <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-2">
+              <p className="text-sm font-medium text-white/80">
+                {currentMessage.name} · {lightbox.imgIdx + 1}/{currentMessage.images.length}
+              </p>
+              {/* Dots mobile */}
+              {currentMessage.images.length > 1 && (
+                <div className="flex gap-1.5 md:hidden">
+                  {currentMessage.images.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLightbox({ msgIdx: lightbox.msgIdx, imgIdx: i });
+                      }}
+                      className="rounded-full transition-all duration-300"
+                      style={{
+                        height: "4px",
+                        width: i === lightbox.imgIdx ? "16px" : "4px",
+                        background: i === lightbox.imgIdx ? "var(--brand-light)" : "rgba(255,255,255,0.3)",
+                      }}
+                      aria-label={`Imagem ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
 export function Testimonials() {
+  const [activeTab, setActiveTab] = useState<"videos" | "messages">("videos");
+
   return (
     <section className="section-y" style={{ background: "var(--bg-base)" }}>
       <Reveal className="container-site text-center">
@@ -983,11 +1181,61 @@ export function Testimonials() {
         >
           Depoimentos
         </motion.span>
-        <h2 className="display-md mb-12" style={{ color: "var(--text-primary)" }}>
+        <h2 className="display-md mb-10" style={{ color: "var(--text-primary)" }}>
           O que pais e alunos <span className="gold-italic">dizem</span>
         </h2>
-        
-        <TestimonialsCarousel />
+
+        {/* ── Tabs ── */}
+        <div className="mx-auto mb-10 flex w-fit rounded-2xl p-1.5" style={{
+          background: "var(--bg-cream)",
+          border: "1px solid var(--border-warm)",
+        }}>
+          {([
+            { key: "videos" as const, label: "Vídeos dos Alunos", Icon: Play },
+            { key: "messages" as const, label: "Mensagens dos Pais", Icon: MessageSquareQuote },
+          ]).map(({ key, label, Icon }) => (
+            <motion.button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              whileTap={{ scale: 0.97 }}
+              className="relative flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-medium tracking-wide transition-colors duration-300 sm:text-[14px]"
+              style={{
+                color: activeTab === key ? "var(--text-on-brand)" : "var(--text-secondary)",
+                background: activeTab === key ? "var(--brand)" : "transparent",
+                boxShadow: activeTab === key ? "0 4px 16px rgba(178,58,72,0.25)" : "none",
+              }}
+            >
+              <Icon size={15} strokeWidth={activeTab === key ? 2.2 : 1.8} />
+              <span className="hidden sm:inline">{label}</span>
+              <span className="sm:hidden">{key === "videos" ? "Vídeos" : "Mensagens"}</span>
+            </motion.button>
+          ))}
+        </div>
+
+        {/* ── Conteúdo das Tabs ── */}
+        <AnimatePresence mode="wait">
+          {activeTab === "videos" ? (
+            <motion.div
+              key="videos"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <TestimonialsCarousel />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="messages"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <MessageGallery />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Reveal>
     </section>
   );
@@ -1119,7 +1367,7 @@ export function Footer() {
               className="mt-1 text-[13px] font-light"
               style={{ color: "rgba(255,255,255,0.50)" }}
             >
-              Professora · Pedagoga · Especialista em Aprendizagem
+              Professora · Pedagoga · Especialista em Aprendizagem · Educação Transformadora
             </p>
           </div>
           <div className="flex flex-col gap-3">

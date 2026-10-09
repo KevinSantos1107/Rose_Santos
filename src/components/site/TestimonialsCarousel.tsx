@@ -27,7 +27,7 @@ export const testimonialsData = [
   {
     id: 1,
     name: "Giovanna",
-    role: "Aluna do 5? ano",
+    role: "Aluna do 5° ano",
     publicId: "VID-20261006-WA0023",
     quote: "Aprendi a gostar de ler e escrever.",
   },
